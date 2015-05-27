@@ -42,67 +42,6 @@ FILE_READ PROC NEAR
  RET
 ENDP
 
-PUSH AX
-PUSH BX
-PUSH CX
-PUSH DX
-
-INIT_PALETTE_L PROC
- push ax
- mov ax,1010h
- int 10h
- pop ax
- ret
-INIT_PALETTE_L ENDP
-
-INIT_PALETTE PROC
-MOV BX, 0
-MOV dh, 0
-MOV ch, 0
-MOV cl, 0
-
-rloop:
-CALL INIT_PALETTE_L
-INC BX
-INC dh
-CMP DH, 3fh
-JNE rloop
-
-gloop:
-MOV dh, 0
-MOV cl, 0
-CALL INIT_PALETTE_L
-inc ch
-INC BX
-CMP ch, 3fh
-JNE gloop
-
-bloop:
-MOV dh, 0
-MOV ch, 0
-CALL INIT_PALETTE_L
-inc cl
-INC BX
-CMP cl, 3fh
-JNE bloop
-
-MOV cl, 0
-gbloop:
-MOV dh, 3fh
-MOV ch, 0
-CALL INIT_PALETTE_L
-inc cl
-INC BX
-CMP cl, 3fh
-JNE gbloop
-ret
-INIT_PALETTE ENDP
-
-
-POP AX
-POP BX
-POP CX
-POP DX
 START:
 MOV AX, 13h
 MOV AH, 0
@@ -112,7 +51,6 @@ MOV DS, AX
 xor di, di
 xor dl, dl
 readpal:
-
 mov bh, dl
 mov ax, 1007h
 int 10h ;; load color register # to BX

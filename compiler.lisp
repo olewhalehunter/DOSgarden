@@ -6,12 +6,14 @@
 ;;;; License : GNU AGPL3
 ;;;;
 ;;;; To do:
-;;;; palette.dat -> r,g,b(0-3F), 3f=63
-;;;; color storage, distance 
+;;;; read height/width
 ;;;; spriteset -> file converter
 ;;;; lisp DSL/vm
 
-(load "resources.lisp")
+; (load "c:/Development/aquarium/")
+; (load "C:/Users/andersen.puckett/AppData/Roaming/quicklisp/setup.lisp") 
+; (quicklisp-quickstart:install)
+; (load "resources.lisp")
 
 
 (defun init-vars ()
@@ -129,7 +131,6 @@ jne vidloop"))
 "xor di, di
 xor dl, dl
 readpal:
-
 mov bh, dl
 mov ax, 1007h
 int 10h ;; load color register # to BX
@@ -161,6 +162,18 @@ INT 21h         ;; write palette to file
 
 "))
 
+(defun load-image ()
+  "CALL FILE_READ
+;; MOV DX, 
+;; MOV DI, 0
+;; mov AX, [ds:FILE_BUFFER+di]
+;; push ax
+;; inc di
+;; mov AX, [ds:FILE_BUFFER+di]
+
+
+")
+
 (defun define-asm-main ()
   "Write main entry point for program."
   ;; (write-to-video)
@@ -170,7 +183,7 @@ INT 21h         ;; write palette to file
 (defun define-asm-procs ()
   "Write asm procedures to source."
   (proc-file-read)
-  (proc-init-palette))
+  )
 (defun compile-asm-string ()
   "Compile lisp to TASM assembly string."
   (asm-header)
