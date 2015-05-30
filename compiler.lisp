@@ -194,13 +194,13 @@ push ax
 push bx
 
 inc cx
-add al, 1
+;add al, 2
 cmp al, cl
-jne xloop
+jg xloop
 inc dx
-add bl, 1
+;add bl, 2
 cmp bl, dl
-jne yloop
+jg yloop
 
 "))
 (* 44 50)
