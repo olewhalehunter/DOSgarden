@@ -51,7 +51,7 @@ POP DX"))
 )
 (defun call (proc-name)
   (o "CALL " proc-name))
-
+(* 200 200)
 (defun asm-header () "Write model, stack, and data headers."
   (o
 ".MODEL SMALL
@@ -60,11 +60,11 @@ POP DX"))
 OUTMSG DB '...', 0AH, '$'
 EXTRA DB 'eeeeeeee->', '$'
 WAVE_SIZE DW 1
-FILE_SIZE DW 5000
+FILE_SIZE DW 40000
 IMG_FNAME DB '" img-file-loc "', 0
 PAL_FNAME DB 'PALETTE.dat', 0
 FILE_HANDLE DW 0
-FILE_BUFFER DB 100 DUP (?), '$'
+FILE_BUFFER DB 40000 DUP (?), '$'
 PALETTE_BUFFER DB 768 DUP (?)
 .CODE
 JMP START
