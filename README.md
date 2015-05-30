@@ -1,4 +1,4 @@
-![sample](https://raw.github.com/username/projectname/branch/path/to/img.png)
+![sample](https://github.com/olewhalehunter/dosgarden/blob/master/example.png?raw=true)
 
 To Do:
 ---------
