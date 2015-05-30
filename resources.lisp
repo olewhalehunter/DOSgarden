@@ -1,6 +1,5 @@
 ;;;; Resource converter
-;;;; .PNG -> 256 color bitmap
-;; write h/w to file
+;;;; .PNG -> DOS palette indexed 256 color bitmap
 ; (load "C:/development/aquarium/quicklisp.lisp")
 ; (load "C:/Users/andersen.puckett/AppData/Roaming/quicklisp/setup.lisp") 
 ; (quicklisp-quickstart:install)
@@ -77,7 +76,7 @@
 
 (defun write-dimensions-file (stream)
   (write-char (code-char img-height) stream)
-  (write-char (Code-char img-width) stream)
+  (write-char (code-char img-width) stream)
 )
 
 (defun convert-resources ()
@@ -89,4 +88,4 @@
     (write-indices-file stream))
   (print "...done."))
 
-; (convert-resources)
+(convert-resources)

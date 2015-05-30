@@ -21,7 +21,7 @@
   (defparameter asm-string "")
 
   (defparameter img-file-loc 
-    "C:\\TASM\\TASM\\IMAGES.TXT") ; IMG_FNAME
+    "C:\\TASM\\TASM\\out.dat") ; IMG_FNAME
 )
 
 (defmacro concat (&body body) 
@@ -60,7 +60,7 @@ POP DX"))
 OUTMSG DB '...', 0AH, '$'
 EXTRA DB 'eeeeeeee->', '$'
 WAVE_SIZE DW 1
-FILE_SIZE DW 10
+FILE_SIZE DW 5000
 IMG_FNAME DB '" img-file-loc "', 0
 PAL_FNAME DB 'PALETTE.dat', 0
 FILE_HANDLE DW 0
@@ -162,23 +162,55 @@ INT 21h         ;; write palette to file
 
 "))
 
+(defun read-char-stdin ()
+  (o 
+"mov ah, 01h
+int 21h"))
+
 (defun load-image ()
-  "CALL FILE_READ
-;; MOV DX, 
-;; MOV DI, 0
-;; mov AX, [ds:FILE_BUFFER+di]
-;; push ax
-;; inc di
-;; mov AX, [ds:FILE_BUFFER+di]
+  (o 
+"CALL FILE_READ
+MOV DI, 0
+mov AL, [ds:FILE_BUFFER+di]
+push ax
+inc di
+mov AL, [ds:FILE_BUFFER+di]
+push ax
+inc di
 
+mov dx, 0
+yloop:
+mov cx, 0
+xloop:
+mov ah, 0ch
+mov al, [ds:FILE_BUFFER+di]
+mov bh, 0
+int 10h
 
-")
+inc di
+pop ax
+pop bx
+push ax
+push bx
 
+inc cx
+add al, 1
+cmp al, cl
+jne xloop
+inc dx
+add bl, 1
+cmp bl, dl
+jne yloop
+
+"))
+(* 44 50)
 (defun define-asm-main ()
   "Write main entry point for program."
   ;; (write-to-video)
   ;; (call "FILE_READ")
-  (write-palette-to-file)
+  ;;(write-palette-to-file)
+  (load-image)
+  (read-char-stdin)
   (print "."))
 (defun define-asm-procs ()
   "Write asm procedures to source."
