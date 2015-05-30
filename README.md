@@ -1,5 +1,6 @@
+![sample](https://raw.github.com/username/projectname/branch/path/to/img.png)
 
 To Do:
 ---------
-DSL for demo/game
-emacs compiler
+lisp DSL for demos/games
+export image workflow
