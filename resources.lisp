@@ -33,12 +33,28 @@
 			    (subseq hex-str 4 6)
 			    (subseq hex-str 6 8))))))
        hex-list))
+
+(defun average (list) (/ (reduce #'+ list) (length list)))
+
+(defun hue-distance (a b)
+  (if (< (average a) 80)
+      (rgb-distance (list 255 (* (elt a 1) 2)
+			  (* (elt a 2) 3)
+			  (* (elt a 3) 3))
+		    b)
+  0
+))
+
 (defun rgb-distance (a b)
+  (if (< (average a) 110)
+      (setq a (list 255 (* (elt a 1) 2)
+  		    (* (elt a 2) 2)
+  		    (* (elt a 3) 2))))
   (sqrt (+
-   (expt (- (elt a 1) (elt b 1)) 2)
+	 (expt (- (elt a 1) (elt b 1)) 2)
    (expt (- (elt a 2) (elt b 2)) 2)
    (expt (- (elt a 3) (elt b 3)) 2))))
-
+ 
 (defparameter img-width 0)
 (defparameter img-height 0)
 (defparameter img-pixels 
