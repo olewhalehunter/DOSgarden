@@ -1,5 +1,6 @@
 ;;;; Resource converter
 ;;;; .PNG -> DOS palette indexed 256 color bitmap
+;;;; magenta (255 255 0 255) is alpha color
 ; (load "C:/development/aquarium/quicklisp.lisp")
 ; (load "C:/Users/andersen.puckett/AppData/Roaming/quicklisp/setup.lisp") 
 ; (quicklisp-quickstart:install)
@@ -8,6 +9,7 @@
 (defparameter png-source "image.png")
 (defparameter palette-source "PALETTE.dat")
 (defparameter alpha-bits 16777215)
+(defparameter alpha-rgb (list 255 255 0 255))
 (defun 2d-array-to-list (array)
   (loop for x below (array-dimension array 0)
      collect (loop for y below (array-dimension array 1)
@@ -58,20 +60,22 @@
       (2d-array-to-list img-array)))))
 (defparameter palette-pixels
   (with-open-file (in palette-source)
-      (loop for i from 0 to 254 collect 
+      (loop for i from 0 to 253 collect 
 	  (list 255
 	   (* 4 (char-int (read-char in)))
 	   (* 4 (char-int (read-char in)))
 	   (* 4 (char-int (read-char in)))))))
 
 (defun index-of-closest-palette (rgb)
+  (if (equal rgb alpha-rgb)
+      1
   (let ((min-dist 442) (min-index 255))
-    (loop for x from 0 to 254 do
+    (loop for x from 0 to 253 do
 	 (let ((dist (rgb-distance rgb (elt palette-pixels x))))
 	   (if (< dist min-dist)
 	       (progn (setq min-index x)
 		      (setq min-dist dist)))))
-    min-index))
+    min-index)))
 
 (defun write-indices-file (stream)
   (loop for x in img-pixels do

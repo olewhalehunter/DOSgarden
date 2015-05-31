@@ -61,6 +61,7 @@ EXTRA DB 'eeeeeeee->', '$'
 WAVE_SIZE DW 1
 FILE_SIZE DW 40000
 IMG_FNAME DB '" img-file-loc "', 0
+IMGB_FNAME DB 'face.dat', 0
 PAL_FNAME DB 'PALETTE.dat', 0
 FILE_HANDLE DW 0
 FILE_BUFFER DB 40000 DUP (?), '$'
@@ -103,9 +104,9 @@ INT 21H"))
  MOV BX, FILE_HANDLE
  INT 21H
 
- ;; MOV BX, FILE_HANDLE	
- ;; MOV AH,3EH
- ;; INT 21H 
+ MOV BX, FILE_HANDLE	
+ MOV AH,3EH
+ INT 21H 
 	
  POP DX
  POP CX
@@ -114,6 +115,34 @@ INT 21H"))
  RET
 ENDP
 "))
+
+(defun fileb-read ()
+  (o
+"PUSH AX
+ PUSH BX
+ PUSH CX
+ PUSH DX
+
+ MOV AH, 3DH
+ MOV AL, 0
+ MOV DX, OFFSET IMGB_FNAME
+ INT 21H
+ MOV FILE_HANDLE, AX
+	
+ MOV AH, 3FH
+ MOV CX, FILE_SIZE
+ MOV DX, OFFSET FILE_BUFFER
+ MOV BX, FILE_HANDLE
+ INT 21H
+
+ MOV BX, FILE_HANDLE	
+ MOV AH,3EH
+ INT 21H 
+	
+ POP DX
+ POP CX
+ POP BX
+ POP AX"))
 
 (defun write-to-video ()
   (o
@@ -166,9 +195,8 @@ INT 21h         ;; write palette to file
 "mov ah, 01h
 int 21h"))
 
-(defun load-image ()
-  (o 
-"CALL FILE_READ
+(defun load-image (n) "LOAD_IMAGE"
+  (o "
 MOV DI, 0
 mov AL, [ds:FILE_BUFFER+di]
 inc di
@@ -177,34 +205,38 @@ push ax
 inc di
 
 mov dx, 0
-yloop:
+yloop" n ":
 mov cx, 0
-xloop:
+xloop" n ":
 mov ah, 0ch
 mov al, [ds:FILE_BUFFER+di]
+cmp al, 01h
+je skipalpha" n "
 mov bh, 0
 int 10h
-
+skipalpha" n ":
 inc di
 pop ax
 push ax
 
 inc cx
 cmp al, cl
-jg xloop
+jg xloop" n "
 
 inc dx
 cmp ah, dl
-jg yloop
-
+jg yloop" n "
 "))
 
 (defun define-asm-main ()
   "Write main entry point for program."
   ;; (write-to-video)
-  ;; (call "FILE_READ")
   ;;(write-palette-to-file)
-  (load-image)
+  (call "FILE_READ")
+  (load-image "a")
+  (fileb-read)
+  (read-char-stdin)
+  (load-image "b")
   (read-char-stdin)
   (print "."))
 (defun define-asm-procs ()
