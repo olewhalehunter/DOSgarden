@@ -51,7 +51,6 @@ POP DX"))
 )
 (defun call (proc-name)
   (o "CALL " proc-name))
-(* 200 200)
 (defun asm-header () "Write model, stack, and data headers."
   (o
 ".MODEL SMALL
@@ -172,9 +171,8 @@ int 21h"))
 "CALL FILE_READ
 MOV DI, 0
 mov AL, [ds:FILE_BUFFER+di]
-push ax
 inc di
-mov AL, [ds:FILE_BUFFER+di]
+mov AH, [ds:FILE_BUFFER+di]
 push ax
 inc di
 
@@ -189,21 +187,18 @@ int 10h
 
 inc di
 pop ax
-pop bx
 push ax
-push bx
 
 inc cx
-;add al, 2
 cmp al, cl
 jg xloop
+
 inc dx
-;add bl, 2
-cmp bl, dl
+cmp ah, dl
 jg yloop
 
 "))
-(* 44 50)
+
 (defun define-asm-main ()
   "Write main entry point for program."
   ;; (write-to-video)

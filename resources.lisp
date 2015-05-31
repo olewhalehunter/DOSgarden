@@ -36,17 +36,8 @@
 
 (defun average (list) (/ (reduce #'+ list) (length list)))
 
-(defun hue-distance (a b)
-  (if (< (average a) 80)
-      (rgb-distance (list 255 (* (elt a 1) 2)
-			  (* (elt a 2) 3)
-			  (* (elt a 3) 3))
-		    b)
-  0
-))
-
 (defun rgb-distance (a b)
-  (if (< (average a) 110)
+  (if (< (average a) 100)
       (setq a (list 255 (* (elt a 1) 2)
   		    (* (elt a 2) 2)
   		    (* (elt a 3) 2))))
@@ -91,8 +82,8 @@
 	stream)))
 
 (defun write-dimensions-file (stream)
-  (write-char (code-char img-height) stream)
   (write-char (code-char img-width) stream)
+  (write-char (code-char img-height) stream)
 )
 
 (defun convert-resources ()
