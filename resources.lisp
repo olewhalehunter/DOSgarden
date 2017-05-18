@@ -1,9 +1,7 @@
 ;;;; Resource converter
 ;;;; .PNG -> DOS palette indexed 256 color bitmap
-;;;; magenta (255 255 0 255) is alpha color
-; (load "C:/development/aquarium/quicklisp.lisp")
-; (load "C:/Users/andersen.puckett/AppData/Roaming/quicklisp/setup.lisp") 
-; (quicklisp-quickstart:install)
+;;;; magenta (255 255 0 255) is default alpha color
+
 (ql:quickload "imago")
 
 (defparameter png-source "image.png")

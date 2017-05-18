@@ -1,20 +1,4 @@
-;;;;
-;;;; lisp compiler for 16 bit DOS
-;;;; asssembly TASM game development
-;;;; using SBCL, DOSBox, TASM
-;;;;
-;;;; License : GNU AGPL3
-;;;;
-;;;; To do:
-;;;; read height/width
-;;;; spriteset -> file converter
-;;;; lisp DSL/vm
-
-; (load "c:/Development/aquarium/")
-; (load "C:/Users/andersen.puckett/AppData/Roaming/quicklisp/setup.lisp") 
-; (quicklisp-quickstart:install)
-; (load "resources.lisp")
-
+(load "resources.lisp")
 
 (defun init-vars ()
   (defparameter asm-file-name "test.asm")
