@@ -1,6 +1,6 @@
 # DOSgarden
 * LISP -> asm TASM source for IBM/DOS machines.
-* compile.bat
+* compile.bat, add mount dir to /home/usr/.dosbox/.conf
 * create/compile 16 bit resources from native SBCL
 * test DOSbox processing per vm framerate for machine test automation
 
